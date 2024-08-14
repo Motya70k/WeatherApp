@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class Location(
     val name: String,
     val country: String,
-    val localTime: String
+    val localtime: String
 )

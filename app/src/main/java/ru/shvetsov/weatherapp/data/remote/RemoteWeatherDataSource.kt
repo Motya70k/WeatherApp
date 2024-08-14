@@ -6,6 +6,7 @@ import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import ru.shvetsov.weatherapp.data.model.WeatherApiResponse
@@ -17,15 +18,19 @@ import ru.shvetsov.weatherapp.utils.Constants
 class RemoteWeatherDataSource {
     suspend fun getCurrentWeather(city: String): WeatherModel? {
         return try {
-            val response: WeatherApiResponse = client.get("http://api.weatherapi.com/v1/current.json?key=2cfe7e74051549298d190704241308&q=$city&aqi=no").body()
-            Log.d("Response", "${response.current.temp}")
+            val response: WeatherApiResponse = client.get("http://api.weatherapi.com/v1/current.json") {
+                parameter("key", Constants.Key.API_KEY)
+                parameter("q", city)
+                parameter("aqi", "no")
+            }.body()
             WeatherModel(
                 city = response.location.name,
                 country = response.location.country,
-                temp = response.current.temp,
-                condition = response.current.condition.weatherType,
+                localTime = response.location.localtime,
+                temp = response.current.temp_c,
+                condition = response.current.condition.text,
                 humidity = response.current.humidity,
-                windSpeed = response.current.windSpeed,
+                windSpeed = response.current.wind_kph,
                 code = response.current.condition.code
             )
         } catch (e: Exception) {
@@ -41,6 +46,7 @@ object KtorClient {
             json(Json {
                 prettyPrint = true
                 isLenient = true
+                ignoreUnknownKeys = true
             })
         }
     }

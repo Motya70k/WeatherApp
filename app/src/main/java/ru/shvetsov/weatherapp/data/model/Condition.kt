@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Condition(
-    val weatherType: String,
+    val text: String,
     val code: Int
 )

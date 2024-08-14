@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class WeatherModel(
     val city: String,
     val country: String,
+    val localTime: String,
     val temp: Double,
     val condition: String,
     val humidity: Double,
