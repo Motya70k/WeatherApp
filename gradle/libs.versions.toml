@@ -12,6 +12,7 @@ ktor = "2.3.12"
 viewmodel = "2.8.4"
 location = "21.3.0"
 coroutinesPlayServices = "1.8.1"
+coil = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -28,6 +29,7 @@ io-ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "viewmodel"}
 com-google-android-gms = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location"}
 org-jetbrains-kotlinx = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "coroutinesPlayServices"}
+io-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil"}
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }

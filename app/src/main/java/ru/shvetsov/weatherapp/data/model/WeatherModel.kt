@@ -11,5 +11,5 @@ data class WeatherModel(
     val condition: String,
     val humidity: Double,
     val windSpeed: Double,
-    val code: Int
+    val icon: String
 )

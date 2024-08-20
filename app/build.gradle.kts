@@ -53,12 +53,20 @@ android {
 
 dependencies {
 
+    //Coil
+    implementation(libs.io.coil.compose)
+    
+    //Location
     implementation(libs.org.jetbrains.kotlinx)
     implementation(libs.com.google.android.gms)
     implementation(libs.io.ktor.serialization)
+
+    //Ktor
     implementation(libs.io.ktor.core)
     implementation(libs.io.ktor.cio)
     implementation(libs.io.ktor.content.negotiation)
+
+    //Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)

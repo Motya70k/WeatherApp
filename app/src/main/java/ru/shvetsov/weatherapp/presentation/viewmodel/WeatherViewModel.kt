@@ -28,7 +28,7 @@ class WeatherViewModel(
                 error = null
             )
             locationTracker.getCurrentLocation()?.let { location ->
-                when(val result = getCurrentWeatherUseCase.getCurrentWeather(location.latitude, location.longitude)) {
+                when(val result = getCurrentWeatherUseCase.getCurrentWeather(43.6, 39.73)) {
                     is Resource.Success -> {
                         state = state.copy(
                             weatherModel = result.data,

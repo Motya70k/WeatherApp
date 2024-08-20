@@ -33,7 +33,7 @@ class RemoteWeatherDataSource {
                 condition = response.current.condition.text,
                 humidity = response.current.humidity,
                 windSpeed = response.current.wind_kph,
-                code = response.current.condition.code
+                icon = response.current.condition.icon
             )
         } catch (e: Exception) {
             e.printStackTrace()
