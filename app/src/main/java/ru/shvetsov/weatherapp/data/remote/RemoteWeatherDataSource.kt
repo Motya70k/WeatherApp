@@ -13,6 +13,7 @@ import ru.shvetsov.weatherapp.data.model.WeatherApiResponse
 import ru.shvetsov.weatherapp.data.model.WeatherModel
 import ru.shvetsov.weatherapp.data.remote.KtorClient.client
 import ru.shvetsov.weatherapp.utils.Constants
+import kotlin.math.roundToInt
 
 
 class RemoteWeatherDataSource {
@@ -28,7 +29,7 @@ class RemoteWeatherDataSource {
                 city = response.location.name,
                 country = response.location.country,
                 localTime = response.location.localtime,
-                temp = response.current.temp_c,
+                temp = response.current.temp_c.roundToInt(),
                 condition = response.current.condition.text,
                 humidity = response.current.humidity,
                 windSpeed = response.current.wind_kph,
