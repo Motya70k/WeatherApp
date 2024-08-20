@@ -1,59 +1,68 @@
 package ru.shvetsov.weatherapp.presentation.viewmodel
 
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
+import ru.shvetsov.weatherapp.domain.location.LocationTracker
+import ru.shvetsov.weatherapp.domain.resource.Resource
 import ru.shvetsov.weatherapp.domain.usecase.GetCurrentWeatherUseCase
-import ru.shvetsov.weatherapp.presentation.intent.WeatherIntent
 import ru.shvetsov.weatherapp.presentation.state.WeatherState
 
-class WeatherViewModel(private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase) : ViewModel() {
 
-    val intents = Channel<WeatherIntent>(Channel.UNLIMITED)
-    private val mutableState = MutableStateFlow(WeatherState())
-    val state: StateFlow<WeatherState> = mutableState
+class WeatherViewModel(
+    private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
+    private val locationTracker: LocationTracker
+) : ViewModel() {
 
-    init {
+    var state by mutableStateOf(WeatherState())
+
+    fun loadWeatherInfo() {
         viewModelScope.launch {
-            loadWeather("London")
-        }
-        handleIntent()
-    }
-
-    private fun handleIntent() {
-        viewModelScope.launch {
-            intents.consumeAsFlow().collect { intent ->
-                when (intent) {
-                    is WeatherIntent.LoadWeather -> loadWeather(intent.city)
-                    is WeatherIntent.RefreshWeather -> loadWeather(intent.city)
+            state = state.copy(
+                isLoading = true,
+                error = null
+            )
+            locationTracker.getCurrentLocation()?.let { location ->
+                when(val result = getCurrentWeatherUseCase.getCurrentWeather(location.latitude, location.longitude)) {
+                    is Resource.Success -> {
+                        state = state.copy(
+                            weatherModel = result.data,
+                            isLoading = false,
+                            error = null
+                        )
+                        Log.d("WeatherViewModel", "loadWeatherInfo: ${location.latitude} ${location.longitude}")
+                    }
+                    is Resource.Error -> {
+                        state = state.copy(
+                            weatherModel = null,
+                            isLoading = false,
+                            error = result.message
+                        )
+                    }
                 }
+            } ?: kotlin.run {
+                state = state.copy(
+                    isLoading = false,
+                    error = "Couldn't retrieve location. Make sure to grant permission and enable GPS."
+                )
             }
-        }
-    }
-
-    private suspend fun loadWeather(city: String) {
-        mutableState.value = mutableState.value.copy(isLoading = true)
-        try {
-            val weather = getCurrentWeatherUseCase.getCurrentWeather(city)
-            mutableState.value = mutableState.value.copy(weatherModel = weather, isLoading = false)
-        } catch (e: Exception) {
-            mutableState.value = mutableState.value.copy(error = e.message, isLoading = false)
         }
     }
 }
 
 class WeatherViewModelFactory(
-    private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase
+    private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
+    private val locationTracker: LocationTracker
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(WeatherViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return WeatherViewModel(getCurrentWeatherUseCase) as T
+            return WeatherViewModel(getCurrentWeatherUseCase, locationTracker) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

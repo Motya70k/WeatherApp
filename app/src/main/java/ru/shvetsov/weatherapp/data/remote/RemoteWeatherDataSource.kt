@@ -16,11 +16,12 @@ import ru.shvetsov.weatherapp.utils.Constants
 
 
 class RemoteWeatherDataSource {
-    suspend fun getCurrentWeather(city: String): WeatherModel? {
+    suspend fun getCurrentWeather(latitude: Double, longitude: Double): WeatherModel? {
         return try {
             val response: WeatherApiResponse = client.get("http://api.weatherapi.com/v1/current.json") {
                 parameter("key", Constants.Key.API_KEY)
-                parameter("q", city)
+                parameter("q", latitude)
+                parameter("q", longitude)
                 parameter("aqi", "no")
             }.body()
             WeatherModel(

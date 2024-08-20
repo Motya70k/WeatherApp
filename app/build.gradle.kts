@@ -53,6 +53,8 @@ android {
 
 dependencies {
 
+    implementation(libs.org.jetbrains.kotlinx)
+    implementation(libs.com.google.android.gms)
     implementation(libs.io.ktor.serialization)
     implementation(libs.io.ktor.core)
     implementation(libs.io.ktor.cio)
