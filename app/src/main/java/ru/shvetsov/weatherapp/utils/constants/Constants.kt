@@ -1,4 +1,4 @@
-package ru.shvetsov.weatherapp.utils
+package ru.shvetsov.weatherapp.utils.constants
 
 class Constants {
 

@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import coil.size.Size
 import ru.shvetsov.weatherapp.R
+import ru.shvetsov.weatherapp.data.model.ForecastDayModel
 import ru.shvetsov.weatherapp.presentation.state.WeatherState
 
 @Composable
@@ -48,101 +50,130 @@ fun WeatherScreen(weatherState: WeatherState) {
                 Text(text = weatherState.error)
             }
 
-            weatherState.weatherModel != null -> {
-                Text(
-                    text = "${weatherState.weatherModel.city}, ${weatherState.weatherModel.country}",
-                    style = TextStyle(
-                        color = colorResource(id = R.color.gray),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = weatherState.weatherModel.localTime, style = TextStyle(
-                        color = colorResource(id = R.color.gray),
-                        fontSize = 10.sp
-                    )
-                )
-                Spacer(modifier = Modifier.height(150.dp))
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data("https:${weatherState.weatherModel.icon}")
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "Icon",
-                    modifier = Modifier.size(150.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "${weatherState.weatherModel.temp}°", style = TextStyle(
-                        color = colorResource(id = R.color.gray),
-                        fontSize = 100.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = weatherState.weatherModel.condition, style = TextStyle(
-                        color = colorResource(id = R.color.gray),
-                        fontSize = 20.sp
-                    )
-                )
-                Spacer(modifier = Modifier.height(30.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "Wind", style = TextStyle(
-                                color = colorResource(id = R.color.gray),
-                                fontSize = 20.sp
-                            )
+            else -> {
+                weatherState.weatherModel?.let { weatherModel ->
+                    Text(
+                        text = "${weatherModel.city}, ${weatherModel.country}",
+                        style = TextStyle(
+                            color = colorResource(id = R.color.gray),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
                         )
-                        Spacer(modifier = Modifier.height(7.dp))
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = weatherModel.localTime, style = TextStyle(
+                            color = colorResource(id = R.color.gray),
+                            fontSize = 14.sp
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(150.dp))
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data("https:${weatherModel.icon}")
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Icon",
+                        modifier = Modifier.size(150.dp)
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = "${weatherModel.temp}°", style = TextStyle(
+                            color = colorResource(id = R.color.gray),
+                            fontSize = 100.sp,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        modifier = Modifier.padding(start = 35.dp)
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = weatherModel.condition, style = TextStyle(
+                            color = colorResource(id = R.color.gray),
+                            fontSize = 20.sp
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Image(painter = painterResource(id = R.drawable.wind), contentDescription = "Wind")
                             Text(
-                                text = weatherState.weatherModel.windSpeed.toString(),
-                                style = TextStyle(
+                                text = "Wind", style = TextStyle(
                                     color = colorResource(id = R.color.gray),
-                                    fontSize = 18.sp
-                                ),
-                                modifier = Modifier.padding(start = 5.dp)
+                                    fontSize = 20.sp
+                                )
                             )
+                            Spacer(modifier = Modifier.height(7.dp))
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Image(painter = painterResource(id = R.drawable.wind), contentDescription = "Wind")
+                                Text(
+                                    text = "${weatherModel.windSpeed} km/h",
+                                    style = TextStyle(
+                                        color = colorResource(id = R.color.gray),
+                                        fontSize = 18.sp
+                                    ),
+                                    modifier = Modifier.padding(start = 5.dp)
+                                )
+                            }
+                        }
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Humidity", style = TextStyle(
+                                    color = colorResource(id = R.color.gray),
+                                    fontSize = 20.sp
+                                )
+                            )
+                            Spacer(modifier = Modifier.height(7.dp))
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Image(painter = painterResource(id = R.drawable.humidity), contentDescription = "Humidity")
+                                Text(
+                                    text = "${weatherModel.humidity}%",
+                                    style = TextStyle(
+                                        color = colorResource(id = R.color.gray),
+                                        fontSize = 18.sp
+                                    ),
+                                    modifier = Modifier.padding(start = 5.dp)
+                                )
+                            }
                         }
                     }
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "Humidity", style = TextStyle(
-                                color = colorResource(id = R.color.gray),
-                                fontSize = 20.sp
-                            )
-                        )
-                        Spacer(modifier = Modifier.height(7.dp))
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Image(painter = painterResource(id = R.drawable.humidity), contentDescription = "Humidity")
-                            Text(
-                                text = weatherState.weatherModel.humidity.toString(),
-                                style = TextStyle(
-                                    color = colorResource(id = R.color.gray),
-                                    fontSize = 18.sp
-                                ),
-                                modifier = Modifier.padding(start = 5.dp)
-                            )
+                }
+                weatherState.weeklyForecastModel?.let { weeklyForecast ->
+                    Spacer(modifier = Modifier.height(70.dp))
+                    LazyColumn {
+                        items(weeklyForecast) { forecastDayModel ->
+                            ForecastItem(forecastDayModel = forecastDayModel)
                         }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ForecastItem(forecastDayModel: ForecastDayModel) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Absolute.SpaceAround
+    ) {
+        Text(text = forecastDayModel.date)
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data("https:${forecastDayModel.day.condition.icon}")
+                .crossfade(true)
+                .build(),
+            contentDescription = "Weather type"
+        )
+        Text(text = "${forecastDayModel.day.maxtemp_c}° / ${forecastDayModel.day.mintemp_c}°")
     }
 }

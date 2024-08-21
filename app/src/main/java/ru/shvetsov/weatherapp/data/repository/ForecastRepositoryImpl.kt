@@ -1,18 +1,20 @@
 package ru.shvetsov.weatherapp.data.repository
 
-import ru.shvetsov.weatherapp.data.model.CurrentWeatherModel
+import ru.shvetsov.weatherapp.data.model.ForecastModel
 import ru.shvetsov.weatherapp.data.remote.RemoteWeatherDataSource
-import ru.shvetsov.weatherapp.domain.repository.CurrentWeatherRepository
+import ru.shvetsov.weatherapp.domain.repository.ForecastRepository
 import ru.shvetsov.weatherapp.domain.resource.Resource
 
-class CurrentWeatherRepositoryImpl(
+class ForecastRepositoryImpl(
     private val remoteDataSource: RemoteWeatherDataSource
-): CurrentWeatherRepository {
-
-    override suspend fun getCurrentWeather(latitude: Double, longitude: Double): Resource<CurrentWeatherModel> {
+) : ForecastRepository {
+    override suspend fun getWeeklyForecast(
+        latitude: Double,
+        longitude: Double
+    ): Resource<ForecastModel> {
         return try {
             Resource.Success(
-                data = remoteDataSource.getCurrentWeather(latitude, longitude)
+                data = remoteDataSource.getWeeklyForecast(latitude, longitude)
             )
         } catch (e: Exception) {
             e.printStackTrace()

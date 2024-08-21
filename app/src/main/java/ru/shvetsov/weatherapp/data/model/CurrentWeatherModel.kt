@@ -3,7 +3,7 @@ package ru.shvetsov.weatherapp.data.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class WeatherModel(
+data class CurrentWeatherModel(
     val city: String,
     val country: String,
     val localTime: String,

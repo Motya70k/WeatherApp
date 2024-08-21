@@ -14,6 +14,8 @@ import com.google.android.gms.location.LocationServices
 import ru.shvetsov.weatherapp.data.location.DefaultLocationTracker
 import ru.shvetsov.weatherapp.data.remote.RemoteWeatherDataSource
 import ru.shvetsov.weatherapp.data.repository.CurrentWeatherRepositoryImpl
+import ru.shvetsov.weatherapp.data.repository.ForecastRepositoryImpl
+import ru.shvetsov.weatherapp.domain.usecase.ForecastUseCase
 import ru.shvetsov.weatherapp.domain.usecase.GetCurrentWeatherUseCase
 import ru.shvetsov.weatherapp.presentation.ui.screens.WeatherScreen
 import ru.shvetsov.weatherapp.presentation.ui.theme.WeatherAppTheme
@@ -26,6 +28,9 @@ class MainActivity : ComponentActivity() {
     private val viewModel: WeatherViewModel by viewModels {
         WeatherViewModelFactory(
             getCurrentWeatherUseCase = GetCurrentWeatherUseCase(CurrentWeatherRepositoryImpl(
+                RemoteWeatherDataSource()
+            )),
+            forecastUseCase = ForecastUseCase(ForecastRepositoryImpl(
                 RemoteWeatherDataSource()
             )),
             locationTracker = DefaultLocationTracker(
