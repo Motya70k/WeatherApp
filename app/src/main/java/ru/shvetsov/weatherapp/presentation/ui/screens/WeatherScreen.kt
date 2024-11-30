@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -73,7 +74,7 @@ fun WeatherScreen(weatherState: WeatherState) {
                             .data("https:${weatherModel.icon}")
                             .crossfade(true)
                             .build(),
-                        contentDescription = "Icon",
+                        contentDescription = stringResource(R.string.icon),
                         modifier = Modifier.size(150.dp)
                     )
                     Spacer(modifier = Modifier.height(10.dp))
@@ -101,7 +102,7 @@ fun WeatherScreen(weatherState: WeatherState) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "Wind", style = TextStyle(
+                                text = stringResource(R.string.wind), style = TextStyle(
                                     color = colorResource(id = R.color.gray),
                                     fontSize = 20.sp
                                 )
@@ -110,9 +111,14 @@ fun WeatherScreen(weatherState: WeatherState) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Image(painter = painterResource(id = R.drawable.wind), contentDescription = "Wind")
+                                Image(
+                                    painter = painterResource(id = R.drawable.wind),
+                                    contentDescription = stringResource(
+                                        R.string.wind
+                                    )
+                                )
                                 Text(
-                                    text = "${weatherModel.windSpeed} km/h",
+                                    text = stringResource(R.string.km_h, weatherModel.windSpeed),
                                     style = TextStyle(
                                         color = colorResource(id = R.color.gray),
                                         fontSize = 18.sp
@@ -125,7 +131,7 @@ fun WeatherScreen(weatherState: WeatherState) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "Humidity", style = TextStyle(
+                                text = stringResource(R.string.humidity), style = TextStyle(
                                     color = colorResource(id = R.color.gray),
                                     fontSize = 20.sp
                                 )
@@ -134,7 +140,12 @@ fun WeatherScreen(weatherState: WeatherState) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Image(painter = painterResource(id = R.drawable.humidity), contentDescription = "Humidity")
+                                Image(
+                                    painter = painterResource(id = R.drawable.humidity),
+                                    contentDescription = stringResource(
+                                        R.string.humidity
+                                    )
+                                )
                                 Text(
                                     text = "${weatherModel.humidity}%",
                                     style = TextStyle(
@@ -172,7 +183,7 @@ fun ForecastItem(forecastDayModel: ForecastDayModel) {
                 .data("https:${forecastDayModel.day.condition.icon}")
                 .crossfade(true)
                 .build(),
-            contentDescription = "Weather type"
+            contentDescription = stringResource(R.string.weather_type)
         )
         Text(text = "${forecastDayModel.day.maxtemp_c}° / ${forecastDayModel.day.mintemp_c}°")
     }

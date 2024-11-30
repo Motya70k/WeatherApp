@@ -12,6 +12,8 @@ import ru.shvetsov.weatherapp.domain.resource.Resource
 import ru.shvetsov.weatherapp.domain.usecase.ForecastUseCase
 import ru.shvetsov.weatherapp.domain.usecase.GetCurrentWeatherUseCase
 import ru.shvetsov.weatherapp.presentation.state.WeatherState
+import ru.shvetsov.weatherapp.utils.constants.Constants.Companion.PERMISSION_ERROR
+import ru.shvetsov.weatherapp.utils.constants.Constants.Companion.UNKNOWN_ERROR
 
 class WeatherViewModel(
     private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
@@ -56,14 +58,14 @@ class WeatherViewModel(
                     else -> {
                         state.copy(
                             isLoading = false,
-                            error = "Unknown error"
+                            error = UNKNOWN_ERROR
                         )
                     }
                 }
             } ?: kotlin.run {
                 state = state.copy(
                     isLoading = false,
-                    error = "Couldn't retrieve location. Make sure to grant permission and enable GPS."
+                    error = PERMISSION_ERROR
                 )
             }
         }

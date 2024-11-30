@@ -17,7 +17,7 @@ class CurrentWeatherRepositoryImpl(
         } catch (e: Exception) {
             e.printStackTrace()
             Resource.Error(
-                message = e.message ?: "An unknown error occurred."
+                message = e.message ?: "An unknown error occurred"
             )
         }
     }

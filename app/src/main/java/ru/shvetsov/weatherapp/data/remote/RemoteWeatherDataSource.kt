@@ -1,5 +1,6 @@
 package ru.shvetsov.weatherapp.data.remote
 
+import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -18,13 +19,15 @@ import ru.shvetsov.weatherapp.utils.date.formatDate
 import ru.shvetsov.weatherapp.utils.date.formatDateTime
 import java.time.LocalDate
 import kotlin.math.roundToInt
-
+import ru.shvetsov.weatherapp.BuildConfig
+import ru.shvetsov.weatherapp.utils.constants.Constants.Companion.URL_CURRENT_WEATHER
+import ru.shvetsov.weatherapp.utils.constants.Constants.Companion.URL_WEATHER_FORECAST
 
 class RemoteWeatherDataSource {
     suspend fun getCurrentWeather(latitude: Double, longitude: Double): CurrentWeatherModel? {
         return try {
-            val response: CurrentWeatherApiResponse = client.get("http://api.weatherapi.com/v1/current.json") {
-                parameter("key", Constants.Key.API_KEY)
+            val response: CurrentWeatherApiResponse = client.get(URL_CURRENT_WEATHER) {
+                parameter("key", BuildConfig.API_KEY)
                 parameter("q", latitude)
                 parameter("q", longitude)
                 parameter("aqi", "no")
@@ -47,8 +50,8 @@ class RemoteWeatherDataSource {
 
     suspend fun getWeeklyForecast(latitude: Double, longitude: Double): ForecastModel? {
         return try {
-            val response: ForecastApiResponse = client.get("http://api.weatherapi.com/v1/forecast.json") {
-                parameter("key", Constants.Key.API_KEY)
+            val response: ForecastApiResponse = client.get(URL_WEATHER_FORECAST) {
+                parameter("key", BuildConfig.API_KEY)
                 parameter("q", latitude)
                 parameter("q", longitude)
                 parameter("days", 7)
