@@ -22,7 +22,7 @@ val response: ForecastApiResponse = client.get(URL_WEATHER_FORECAST) {
     parameter("alerts", "no")
 }.body()
 ```
-#### На данный момент, открытое API предоставляет прогноз погоды только на 3 дня, включая текущий, вне зависимости от количества дней, переданных в запрос.
+#### На данный момент, открытое API предоставляет прогноз погоды только на 3 дня, включая текущий, вне зависимости от количества дней, переданных в запросе.
 ___
 ## Используемые технологии
 + ![Static Badge](https://img.shields.io/badge/Kotlin-0095D5?style=for-the-badge&logo=kotlin&color=white)
@@ -43,14 +43,13 @@ ___
    git clone https://github.com/Motya70k/WeatherApp
    ```
 2. Открыть проект в Android Studio
-3. Синхронизировать проект
-4. Получить API_KEY на [WeatherAPI](https://www.weatherapi.com/)
-5. В local.properties создать переменную API_KEY
+3. Получить API_KEY на [WeatherAPI](https://www.weatherapi.com/)
+4. В local.properties создать переменную API_KEY
    ```
    sdk.dir=Ваш путь до Android SDK
-   API_KEY=Ваш API_KEY, полученный с [WeatherAPI](https://www.weatherapi.com/)
+   API_KEY=Ваш API_KEY, полученный с WeatherAPI
    ```
-6. Синхронизировать проект
-7. Запустить приложение на эмуляторе или реальном смартфоне
+5. Синхронизировать проект
+6. Запустить приложение на эмуляторе или реальном смартфоне
 ___
 #### Для корректной работы необходимо предоставить разрешение на получение местоположения устройства.
