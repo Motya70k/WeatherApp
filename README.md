@@ -40,7 +40,7 @@ ___
    + Склонировать проект
    ```
    git init
-   git clone https://github.com/Motya70k/WeatherApp
+   git clone https://github.com/mvshvetsov/WeatherApp
    ```
 2. Открыть проект в Android Studio
 3. Получить API_KEY на [WeatherAPI](https://www.weatherapi.com/)
